@@ -13,6 +13,8 @@ public:
 
 	void pollEvents();
 	inline bool isClosed() { return closed; };
+	void RenderFrame();
+	void Update();
 
 private:
 	bool init();
@@ -24,5 +26,6 @@ private:
 
 	bool closed = false;
 
+	SDL_Surface* SDLWindowSurface = nullptr;
 	SDL_Window* window = nullptr;
 };

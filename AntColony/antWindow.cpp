@@ -9,7 +9,6 @@ Window::Window(const string& title, int width, int height) :
 	{
 		closed = true;
 	}
-
 }
 
 Window::~Window() 
@@ -35,8 +34,25 @@ bool Window::init()
 	if (window == nullptr) {
 		std::cerr << "Window creation failure.\n";
 	}
-
+	SDLWindowSurface = SDL_GetWindowSurface(window);
+	if (SDLWindowSurface == nullptr) {
+		std::cerr << "Window surface creation failure.\n";
+	}
+	Update();
+	RenderFrame();
 	return true;
+}
+
+void Window::RenderFrame() {
+	SDL_UpdateWindowSurface(window);
+}
+
+void Window::Update() {
+	SDL_FillRect(
+		SDLWindowSurface,
+		nullptr,
+		SDL_MapRGB(SDLWindowSurface->format, 40, 40, 40)
+	);
 }
 
 void Window::pollEvents() {
