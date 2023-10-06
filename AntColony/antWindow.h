@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <SDL.h>
+#include <vector>
 
 using namespace std;
 
@@ -29,4 +30,6 @@ private:
 	SDL_Renderer* renderer = nullptr;
 	bool closed = false;
 	int pointRadius = 10;
+	vector<vector<int>> pointPositions;
+	vector<int> tempPos = {0,0};
 };

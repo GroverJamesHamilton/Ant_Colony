@@ -84,10 +84,25 @@ void Window::pollEvents() {
 			case SDL_BUTTON_LEFT:
 				int x, y;
 				SDL_GetMouseState(&x, &y);
-				cout << "Mouse click position: " << x << "," << y << endl;
-				SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-				DrawCircle(renderer, x, y, pointRadius);
-				SDL_RenderPresent(renderer);
+				//cout << "Mouse click position: " << x << "," << y << endl;
+				if (inBounds(x, y, pointRadius, width, height))
+				{
+					tempPos.at(0) = x;
+					tempPos.at(1) = y;
+					
+					if (!collision(pointPositions, tempPos, pointRadius)) {
+						pointPositions.push_back(tempPos);
+						cout << pointPositions.size() << "\n";
+						SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+						DrawCircle(renderer, x, y, pointRadius);
+						SDL_RenderPresent(renderer);
+					}
+
+				}
+				else
+				{
+					cout << "Out of bounds!";
+				}
 				break;
 			case SDL_BUTTON_RIGHT:
 				//SDL_ShowSimpleMessageBox(0, "Mouse", "Right button was pressed!", window);

@@ -1,5 +1,7 @@
 #include "restFunctions.h"
 #include <iostream>
+#include <vector>
+#include <cmath>
 
 void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_t radius)
 {
@@ -34,5 +36,44 @@ void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_
 			tx += 2;
 			error += (tx - diameter);
 		}
+	}
+}
+
+bool inBounds(int xpos, int ypos, int radius, int windowWidth, int windowHeight) {
+
+	if (xpos + radius < windowWidth && xpos - radius > 0 && ypos + radius < windowHeight && ypos - radius > 0) {
+		return true;
+}
+	else
+	{
+		return false;
+	}
+
+}
+bool collision(vector<vector<int>> positions, vector<int> currPos, int radius) {
+	if (positions.size() == 0) { return false; }
+	else
+	{
+		int xcurr = currPos.at(0);
+		int ycurr = currPos.at(1);
+		int xval, yval;
+		int distance;
+		int minDistance = 100000;
+		bool allchecked = false;
+	for (int i = 0; i < positions.size(); i++) {
+		if (i == positions.size() - 1) { allchecked = true; }
+		xval = positions.at(i).at(0);
+		yval = positions.at(i).at(1);
+		distance = sqrt(pow(xcurr - xval, 2) + pow(ycurr - yval, 2));
+
+		if (distance < 2*radius) {
+			return true;
+			break;
+		}
+	}
+	if (allchecked)
+	{
+		return false;
+	}
 	}
 }
