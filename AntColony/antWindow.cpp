@@ -1,5 +1,5 @@
 #include "antWindow.h"
-
+#include "restFunctions.h"
 #include <iostream>
 
 Window::Window(const string& title, int width, int height) :
@@ -34,12 +34,14 @@ bool Window::init()
 	if (window == nullptr) {
 		std::cerr << "Window creation failure.\n";
 	}
-	SDLWindowSurface = SDL_GetWindowSurface(window);
-	if (SDLWindowSurface == nullptr) {
-		std::cerr << "Window surface creation failure.\n";
+
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	if (renderer == nullptr) {
+		std::cerr << "Window renderer creation failure.\n";
 	}
-	Update();
-	RenderFrame();
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+	SDL_RenderClear(renderer);
+	SDL_RenderPresent(renderer);
 	return true;
 }
 
@@ -55,6 +57,18 @@ void Window::Update() {
 	);
 }
 
+void Window::Draw() {
+
+	if (renderer == nullptr) {
+		std::cerr << "Window renderer creation failure.\n";
+	}
+
+	SDL_SetRenderDrawColor(renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
+	SDL_RenderClear(renderer);
+	SDL_RenderDrawLine(renderer, 5, 5, 100, 120);
+	SDL_RenderPresent(renderer);
+}
+
 void Window::pollEvents() {
 	SDL_Event event;
 
@@ -63,8 +77,30 @@ void Window::pollEvents() {
 		case SDL_QUIT:
 			closed = true;
 			break;
+			//
+		case SDL_MOUSEBUTTONDOWN:
+			switch (event.button.button)
+			{
+			case SDL_BUTTON_LEFT:
+				int x, y;
+				SDL_GetMouseState(&x, &y);
+				cout << "Mouse click position: " << x << "," << y << endl;
+				SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+				DrawCircle(renderer, x, y, pointRadius);
+				SDL_RenderPresent(renderer);
+				break;
+			case SDL_BUTTON_RIGHT:
+				//SDL_ShowSimpleMessageBox(0, "Mouse", "Right button was pressed!", window);
+				break;
+			default:
+				//SDL_ShowSimpleMessageBox(0, "Mouse", "Some other button was pressed!", window);
+				break;
+			}
+			break;
+			//
 		default:
 			break;
 		}
 	}
 }
+

@@ -15,6 +15,7 @@ public:
 	inline bool isClosed() { return closed; };
 	void RenderFrame();
 	void Update();
+	void Draw();
 
 private:
 	bool init();
@@ -23,9 +24,9 @@ private:
 	string title = "Antcolony";
 	int width = 800;
 	int height = 600;
-
-	bool closed = false;
-
 	SDL_Surface* SDLWindowSurface = nullptr;
 	SDL_Window* window = nullptr;
+	SDL_Renderer* renderer = nullptr;
+	bool closed = false;
+	int pointRadius = 10;
 };

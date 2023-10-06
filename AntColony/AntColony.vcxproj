@@ -132,9 +132,11 @@
   <ItemGroup>
     <ClCompile Include="antWindow.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="restFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="antWindow.h" />
+    <ClInclude Include="restFunctions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
