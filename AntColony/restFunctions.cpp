@@ -77,3 +77,19 @@ bool collision(vector<vector<int>> positions, vector<int> currPos, int radius) {
 	}
 	}
 }
+
+int getMaxRadius(int xPos, int yPos, vector<vector<int>> positions, int pRadius, int windowWidth, int windowHeight) {
+	if (positions.size() == 0) { return 0; }
+	else {
+		int xval, yval;
+		int distance = 0;
+		int minDistance = 100000;
+		for (int i = 0; i < positions.size(); i++) {
+			xval = positions.at(i).at(0);
+			yval = positions.at(i).at(1);
+			distance = sqrt(pow(xPos - xval, 2) + pow(yPos - yval, 2));
+			if (distance < minDistance) { minDistance = distance; }
+		}
+		return minDistance - 1.5*pRadius;
+	}
+}

@@ -32,4 +32,6 @@ private:
 	int pointRadius = 10;
 	vector<vector<int>> pointPositions;
 	vector<int> tempPos = {0,0};
+	int x, y;
+	int obstRadius;
 };
