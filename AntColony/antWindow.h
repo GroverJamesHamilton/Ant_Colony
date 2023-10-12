@@ -11,7 +11,7 @@ public:
 
 	Window(const string& title, int width, int height);
 	~Window();
-
+	void resetNode();
 	void pollEvents();
 	inline bool isClosed() { return closed; };
 	void RenderFrame();
@@ -23,15 +23,23 @@ private:
 
 private:
 	string title = "Antcolony";
-	int width = 800;
-	int height = 600;
+	int width = 1000;
+	int height = 800;
 	SDL_Surface* SDLWindowSurface = nullptr;
 	SDL_Window* window = nullptr;
 	SDL_Renderer* renderer = nullptr;
 	bool closed = false;
-	int pointRadius = 10;
-	vector<vector<int>> pointPositions;
-	vector<int> tempPos = {0,0};
+	int nodeRad = 15;
+	vector<vector<int>> nodePos;
+	vector<vector<int>> obstPositions;
+	vector<int> nodeConnection = { 0,0 };
+	vector<vector<int>> nodeConnections;
+	vector<int> tempPos = { 0,0,0 };
+	vector<int> tempObst = { 0,0,0 };
+	double connectionWeights[100][100];
 	int x, y;
 	int obstRadius;
+	bool highlighted = false;
+	int lastHighlightedNodeIndex = 999;
+	int nearestNodeIndex;
 };

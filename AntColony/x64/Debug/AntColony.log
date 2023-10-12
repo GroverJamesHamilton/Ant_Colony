@@ -1,8 +1,2 @@
 ﻿  antWindow.cpp
-  restFunctions.cpp
-C:\Users\Alexa\source\repos\AntColony\AntColony\restFunctions.cpp(67,18): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Alexa\source\repos\AntColony\AntColony\restFunctions.cpp(90,19): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Alexa\source\repos\AntColony\AntColony\restFunctions.cpp(93,22): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
-  Generating Code...
-C:\Users\Alexa\source\repos\AntColony\AntColony\restFunctions.cpp(79): warning C4715: 'collision': not all control paths return a value
   AntColony.vcxproj -> C:\Users\Alexa\source\repos\AntColony\x64\Debug\AntColony.exe
