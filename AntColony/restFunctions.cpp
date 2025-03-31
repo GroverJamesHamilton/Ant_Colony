@@ -3,7 +3,39 @@
 #include <vector>
 #include <cmath>
 #include <algorithm>
+#include <cctype>
 
+//Figure out whether a string is a decimal, not my original code
+bool isDecimal(const string& str)
+{
+	bool hasDecimalPoint = false;
+	for (char c : str)
+	{
+		if (c == '.' && !hasDecimalPoint)
+		{
+			hasDecimalPoint = true;
+		}
+		else if (!isdigit(c))
+		{
+			return false;
+		}
+	}
+	return hasDecimalPoint;
+}
+
+//Figure out whether a string is a collection of only digits, not my original code
+bool isDigits(const std::string& str) 
+{
+	return all_of(str.begin(), str.end(), ::isdigit);
+}
+
+//Figure out whether a string is a single digit, not my original code
+bool isSingleDigit(const std::string& str) 
+{
+	return str.length() == 1 && std::isdigit(str[0]);
+}
+
+//Draw circle in SDL, not my original code
 void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_t radius)
 {
 	const int32_t diameter = (radius * 2);
@@ -26,13 +58,15 @@ void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_
 		SDL_RenderDrawPoint(renderer, centreX - y, centreY - x);
 		SDL_RenderDrawPoint(renderer, centreX - y, centreY + x);
 
-		if (error <= 0) {
+		if (error <= 0)
+		{
 			++y;
 			error += ty;
 			ty += 2;
 		}
 
-		if (error > 0) {
+		if (error > 0)
+		{
 			--x;
 			tx += 2;
 			error += (tx - diameter);
@@ -40,6 +74,7 @@ void DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY, int32_
 	}
 }
 
+//Checks if a position is in bounds of a circle of known radius
 bool inBounds(int xpos, int ypos, int radius, int windowWidth, int windowHeight)
 {
 	if (xpos + radius < windowWidth && xpos - radius > 0 && ypos + radius < windowHeight && ypos - radius > 0) 
@@ -51,6 +86,8 @@ bool inBounds(int xpos, int ypos, int radius, int windowWidth, int windowHeight)
 		return false;
 	}
 }
+
+//Checks if the node you want to place collides with another
 bool collision(vector<vector<int>> positions, vector<int> currPos, int radius) {
 	if (positions.size() == 0) { return false; }
 	else
@@ -79,42 +116,7 @@ bool collision(vector<vector<int>> positions, vector<int> currPos, int radius) {
 	}
 }
 
-int getMaxRadius(int xPos, int yPos, vector<vector<int>> positions, int pRadius, int windowWidth, int windowHeight) {
-	if (positions.size() == 0) { return 0; }
-	else {
-		int xval, yval;
-		int distance = 0;
-		int minDistance = 100000;
-		for (int i = 0; i < positions.size(); i++) {
-			xval = positions.at(i).at(0);
-			yval = positions.at(i).at(1);
-			distance = sqrt(pow(xPos - xval, 2) + pow(yPos - yval, 2));
-			if (distance < minDistance) { minDistance = distance; }
-		}
-		if (minDistance > 3*pRadius) {
-			return minDistance - 1.5 * pRadius;
-		}
-		else { return 0; }
-	}
-}
-
-vector<vector<int>> combList(int N, int K)
-{
-	std::string bitmask(K, 1); // K leading 1's
-	bitmask.resize(N, 0); // N-K trailing 0's
-	vector<vector<int>> allComb;
-	// print integers and permute bitmask
-	do {
-		vector <int> tmp;
-		for (int i = 0; i < N; ++i) // [0..N-1] integers
-		{
-			if (bitmask[i]) tmp.push_back(i);
-		}
-		allComb.push_back(tmp);
-	} while (std::prev_permutation(bitmask.begin(), bitmask.end()));
-	return allComb;
-}
-
+//Return the center of the closest node based on the mouse-clicked x- and y-coordinates
 int getClosestNode(double xcur, double ycur, vector<vector<int>> nodeLocations) {
 	double distance, xnode, ynode;
 	double minDistance = 10000000;
@@ -134,6 +136,7 @@ int getClosestNode(double xcur, double ycur, vector<vector<int>> nodeLocations) 
 	return minDistIndex;
 }
 
+//Checks if the mouse click is inside an existing node
 bool insideNode(double xcur, double ycur, vector<vector<int>> nodeLocations) 
 {
 	double xnode, ynode, distance;
@@ -153,62 +156,16 @@ bool insideNode(double xcur, double ycur, vector<vector<int>> nodeLocations)
 	return inside;
 }
 
-bool nodeConnectionExists(vector<int> curNode, vector<vector<int>> nodes) {
-	bool exists = false;
-	if (nodes.size() > 0) 
-	{
-		for (int i = 0; i < nodes.size(); ++i)
-		{
-			if (curNode == nodes.at(i))
-			{
-				exists = true;
-			}
-		}
-	}
-	else { exists = false; }
-	return exists;
-}
-
+//Euclidian distance
 double distance(double x1, double y1, double x2, double y2)
 {
 	return sqrt(pow((x1 - x2), 2) + pow((y1 - y2), 2));
 }
 
-
-
-
-
-
-bool lineCircleCollision(double x1, double y1, double x2, double y2, double xc, double yc, double circRadius) {
-	bool collision;
-	if (x1 != x2) {
-
-		double k = (y2 - y1) / (x2 - x1);
-		double m = y1 - k * x1;
-		double dist = abs(k*xc - yc + m) / sqrt(pow(k,2) + 1);
-
-		if (dist < circRadius) {
-			collision = true;
-		}
-		else { collision = false; }
-	}
-	else { collision = false; }
-	
-	return collision;
-}
-
-bool lineCirclesCollision(int x1, int y1, int x2, int y2, vector<vector<int>> positions) {
-	int xc, yc, radc;
-	bool collision = false;
-	for (int i = 0; i < positions.size(); ++i) {
-		xc = positions.at(i).at(0);
-		yc = positions.at(i).at(1);
-		radc = positions.at(i).at(2);
-		collision = lineCircleCollision(x1, y1, x2, y2, xc, yc, radc);
-		if (collision) {
-			return true;
-			break;
-		}
-	}
-	return false;
+//Get angle in radians
+double getAngle(int x1, int y1, int x2, int y2)
+{
+	int deltaY = y2 - y1;
+	int deltaX = x2 - x1;
+	return atan2(deltaY, deltaX);
 }
