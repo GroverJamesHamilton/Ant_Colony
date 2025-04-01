@@ -12,17 +12,17 @@
 
 //Window constructor
 Window::Window(const string& title, int width, int height):
-			   title(title), width(width), height(height)
-{
-	if (!init())
-	{
+			   title(title), width(width), height(height) {
+
+	if (!init()) {
+
 		closed = true;
 	}
 }
 
 //Window destructor
-Window::~Window()
-{
+Window::~Window() {
+
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 	TTF_CloseFont(font);
@@ -30,8 +30,8 @@ Window::~Window()
 }
 
 //Draws an empty plot, i.e. draws a white square and 2 orthogonal axes in the lower window area
-vector<int> Window::DrawEmptyPlot()
-{
+vector<int> Window::DrawEmptyPlot() {
+
 	const int plotHeight = static_cast<int>(plotRatio * height);
 	const int plotY = static_cast<int>((1 - plotRatio) * height);
 
@@ -64,8 +64,8 @@ vector<int> Window::DrawEmptyPlot()
 
 //Plots on the window (line-plot), intended to plot the current vector
 //of the minimum distance per iteration 
-void Window::drawPlot(vector<double> dist)
-{
+void Window::drawPlot(vector<double> dist) {
+
 	int xRect, yRect, wRect, hRect, plotwidth;
 	double scale;
 	vector<int> drawrect = DrawEmptyPlot(); //Redraws the plot to be empty and obtains the coordinates to plot within
@@ -78,8 +78,8 @@ void Window::drawPlot(vector<double> dist)
 	scale = hRect / maxDistance(dist);		//Scales the height of the plot
 	//Plots all values within the designated plot space
 	SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
-	for (int i = 0; i < dist.size() - 1; i++)
-	{	
+	for (int i = 0; i < dist.size() - 1; i++) {
+
 		SDL_RenderDrawLine(
 			renderer, 
 			xRect + round(i * plotwidth),
@@ -91,8 +91,8 @@ void Window::drawPlot(vector<double> dist)
 }
 
 //Erases nodemap, i.e. draws a black square of the top area
-void Window::eraseMap()
-{
+void Window::eraseMap() {
+
 	SDL_Rect rect;
 	rect.x = 0;
 	rect.y = 0;
@@ -104,14 +104,14 @@ void Window::eraseMap()
 }
 
 //Load parameters from txt file
-vector<double> Window::loadParams()
-{
+vector<double> Window::loadParams() {
+
 	string line;
 	vector<double> parameters;
 	double parameter;
 	ifstream params("params.txt");
-	while (getline(params, line)) 
-	{
+	while (getline(params, line)) {
+
 		parameter = stod(line);
 		parameters.push_back(parameter);
 	}
@@ -120,13 +120,13 @@ vector<double> Window::loadParams()
 }
 
 //Displays paramaters from the text file
-void Window::dispParams()
-{
+void Window::dispParams() {
+
 	string param;
 	ifstream params("params.txt");
 	cout << "The optimization parameters: " << endl;
-	for (int i = 0; i < paramNames.size(); i++)
-	{
+	for (int i = 0; i < paramNames.size(); i++) {
+
 		getline(params, param);
 		//Displays the parameter name declared in header file and value from txt file
 		cout << i+1 << ":" << paramNames.at(i) << ": " << param << endl;
@@ -135,60 +135,56 @@ void Window::dispParams()
 
 //Change parameter by choice in the text file, 
 //this makes the same nodemap can be tested with different parameter values
-void Window::changeParam()
-{
+void Window::changeParam() {
+
 	string param;
 	vector<string> parameters;
 	ifstream params("params.txt");
 	int changeNumber;
-	while (getline(params, param))
-	{
+	while (getline(params, param)) {
+
 		parameters.push_back(param);
 	}
-	while (1)
-	{
+	while (1) {
 		//Instruct the user what to type in 
 		string paramNumber, newValue;
 		cout << "What parameter (1-8) do you want to change? (Check names above)" << endl;
 		cout << "Type in anything else to not change anything." << endl;
 		cin >> paramNumber;
-		if (!isSingleDigit(paramNumber))
-		{ 
+		if (!isSingleDigit(paramNumber)) {
+
 			cout << "No changes made. Right-click to change parameters again or commence testing your algorithm" << endl;
 			break;
 		}
 		changeNumber = stoi(paramNumber);
-		if (changeNumber >= 1 && changeNumber <= 8)
-		{
+		if (changeNumber >= 1 && changeNumber <= 8) {
+
 			cout << "Change " << paramNames.at(changeNumber - 1) << " to: " << endl;
 			cin >> newValue;
 			//Makes sure only digits and decimals are used
-			if (isDecimal(newValue) || isDigits(newValue) || isSingleDigit(newValue))
-			{
+			if (isDecimal(newValue) || isDigits(newValue) || isSingleDigit(newValue)) {
+
 				parameters.at(changeNumber - 1) = newValue;
 				ofstream params("params.txt", ofstream::out | ofstream::trunc);
-				if (params.is_open())
-				{
-					for (const auto& line : parameters)
-					{
+				if (params.is_open()) {
+
+					for (const auto& line : parameters) {
+
 						params << line << "\n";
 					}
 					params.close();
 					cout << paramNames.at(changeNumber - 1) << "is now changed to " << newValue << endl;
 				}
-				else 
-				{
+				else {
 					cerr << "Unable to open file" << endl;
 				}
 			}
-			else
-			{
+			else {
 				cout << "Not an int or double!" << endl;
 				break;
 			}
 		}
-		else
-		{
+		else {
 			cout << "Not in range or a digit!" << endl;
 			break;
 		}
@@ -196,24 +192,21 @@ void Window::changeParam()
 }
 
 //Initialize the window
-bool Window::init()
-{
+bool Window::init() {
+
 	//Initialize window surface
-	if (SDL_Init(SDL_INIT_VIDEO) != 0)
-	{
+	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		std::cerr << "Failed to initialize SDL.\n";
 		return 0;
 	}
 	//Initialize SDL_ttf
-	if (TTF_Init() == -1)
-	{
+	if (TTF_Init() == -1) {
 		std::cerr << "Failed to initialize TTF.\n";
 		return 0;
 	}
 	//Load font
 	font = TTF_OpenFont("Montserrat-Regular.ttf", 15);
-	if (!font)
-	{
+	if (!font) {
 		cout << "Failed to load font: " << TTF_GetError() << endl;
 	}
 	//Defines a cented window of a specific size
@@ -224,13 +217,12 @@ bool Window::init()
 							  height,
 							  SDL_WINDOW_SHOWN); //Not resizable window
 
-	if (window == nullptr) 
-	{
+	if (window == nullptr) {
 		std::cerr << "Window creation failure.\n";
 	}
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-	if (renderer == nullptr) 
-	{
+
+	if (renderer == nullptr) {
 		std::cerr << "Window renderer creation failure.\n";
 	}
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
@@ -242,19 +234,17 @@ bool Window::init()
 }
 
 //Draws a node to window with a number
-void Window::DrawNode(int number, int radius, int x, int y)
-{
+void Window::DrawNode(int number, int radius, int x, int y) {
+
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 	DrawCircle(renderer, x, y, radius);
 	string nodeNumber = to_string(number);
 	const char* num = nodeNumber.c_str();
 	nodeNum = TTF_RenderText_Solid(font, num, { 0, 255, 0 });
-	if (!nodeNum)
-	{
+	if (!nodeNum) {
 		cout << "Failed to render text: \n";
 	}
-	else
-	{
+	else {
 		//Draws the node number in the circle
 		SDL_Rect numRect = { x - nodeNum->w / 2, y - nodeNum->h / 2, nodeNum->w, nodeNum->h };
 		SDL_Texture* num_texture = SDL_CreateTextureFromSurface(renderer, nodeNum);
@@ -263,23 +253,21 @@ void Window::DrawNode(int number, int radius, int x, int y)
 }
 
 //Not used
-void Window::highlight(int radius, int x, int y)
-{
+void Window::highlight(int radius, int x, int y) {
 	SDL_SetRenderDrawColor(renderer, 255, 165, 0, SDL_ALPHA_OPAQUE);
 	DrawCircle(renderer, x, y, radius);
 	SDL_RenderPresent(renderer);
 }
 //Not used
-void Window::unhighlight(int radius, int x, int y)
-{
+void Window::unhighlight(int radius, int x, int y) {
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 	DrawCircle(renderer, x, y, radius);
 	SDL_RenderPresent(renderer);
 }
 
 //Function to connect 2 nodes, not from their centers but the rim of the drawn circles
-void Window::connect2Nodes(vector<int> node1, vector<int> node2, int radius)
-{	
+void Window::connect2Nodes(vector<int> node1, vector<int> node2, int radius) {
+
 	int x1, y1, x2, y2, X1, Y1, X2, Y2;
 	x1 = node1.at(0);
 	y1 = node1.at(1);
@@ -300,16 +288,16 @@ void Window::connect2Nodes(vector<int> node1, vector<int> node2, int radius)
 
 //Connects all nodes based on either the final shortest path 
 //or the shortest path from the current iteration
-void Window::connectAllNodes(vector<vector<int>> nodePos, vector<int> path, int radius, string drawMode)
-{
+void Window::connectAllNodes(vector<vector<int>> nodePos, vector<int> path, int radius, string drawMode) {
+
 	//Sets the draw color based on whether the path is the final best, current or previous path
 	if (drawMode == "Best") { SDL_SetRenderDrawColor(renderer, 255, 0, 255, SDL_ALPHA_OPAQUE); }
 	else if (drawMode == "Current") { SDL_SetRenderDrawColor(renderer, 0, 255, 0, SDL_ALPHA_OPAQUE); }
 	else if (drawMode == "Previous") { SDL_SetRenderDrawColor(renderer, 20, 20, 0, SDL_ALPHA_OPAQUE); }
 	else { SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE); } //White for default
 	vector<int> node1, node2;
-	for (int i = 0; i < nodePos.size() - 1; i++)
-	{
+	for (int i = 0; i < nodePos.size() - 1; i++) {
+
 		//Nodes are connected to the their neighbors in the inout vector
 		//For example is the path to display is {0 3 5 2 1 4}, 
 		//first a line is drawn between node 0 and 3, then 3 and 5 etc
@@ -324,11 +312,11 @@ void Window::connectAllNodes(vector<vector<int>> nodePos, vector<int> path, int 
 }
 
 //Redraws all nodes that has been placed previously
-void Window::redrawNodes(vector<vector<int>> nodePos, int radius)
-{
+void Window::redrawNodes(vector<vector<int>> nodePos, int radius) {
+
 	int nodex, nodey;
-	for (int i = 0; i < nodePos.size(); i++)
-	{
+	for (int i = 0; i < nodePos.size(); i++) {
+
 		nodex = nodePos.at(i).at(0);
 		nodey = nodePos.at(i).at(1);
 		DrawNode(i, radius, nodex, nodey);
@@ -337,28 +325,28 @@ void Window::redrawNodes(vector<vector<int>> nodePos, int radius)
 }
 
 //Handles the mouse click events
-void Window::pollEvents() 
-{
+void Window::pollEvents() {
+
 	SDL_Event event;
 	vector<vector<int>> Lista;
 	bool choosingStart = false;
 	bool choosingGoal = false;
-	if (SDL_PollEvent(&event)) 
-	{
-		switch (event.type) 
-		{
+	if (SDL_PollEvent(&event)) {
+
+		switch (event.type) {
+
 		case SDL_QUIT:
 			closed = true;
 			break;
 		case SDL_MOUSEBUTTONDOWN:
-			switch (event.button.button)
-			{
+			switch (event.button.button) {
+
 			case SDL_BUTTON_LEFT:
 
 				SDL_GetMouseState(&x, &y); //Obtain click position
 				//When left-clicking on window surface, this case acts depending on different circumstances
-				if (inBounds(x, y, nodeRad, width, static_cast<int>((1 - plotRatio) * height)))
-				{
+				if (inBounds(x, y, nodeRad, width, static_cast<int>((1 - plotRatio) * height))) {
+
 					//In order to create or manipulate nodes,
 					//the click has to in bounds of the surface, 
 					//and the drawn node's rim should not intersect with the edges
@@ -369,30 +357,30 @@ void Window::pollEvents()
 					tempPos.at(1) = y;
 					tempPos.at(2) = nodeRad;
 
-					if (!collision(nodePos, tempPos, nodeRad) && nodePos.size() < 100)
-					{
+					if (!collision(nodePos, tempPos, nodeRad) && nodePos.size() < 100) {
+
 						//If no collision or inside existing node, place node.
 						DrawNode(nodePos.size(), nodeRad, x, y);
 						nodePos.push_back(tempPos); //Store node location in list.
 						SDL_RenderPresent(renderer);
 					}
-					else if (insideNode(x, y, nodePos)) 
-					{
+					else if (insideNode(x, y, nodePos)) {
+
 						//If inside existing node, we highlight it.
 						nearestNodeIndex = getClosestNode(x, y, nodePos);
 						int xCurNode = nodePos.at(nearestNodeIndex).at(0);
 						int yCurNode = nodePos.at(nearestNodeIndex).at(1);
 						int xPrevNode, yPrevNode;
-						if (lastHighlightedNodeIndex != nearestNodeIndex && highlighted)
-						{
+						if (lastHighlightedNodeIndex != nearestNodeIndex && highlighted) {
+
 							xPrevNode = nodePos.at(lastHighlightedNodeIndex).at(0);
 							yPrevNode = nodePos.at(lastHighlightedNodeIndex).at(1);
 							highlight(nodeRad, xCurNode, yCurNode);
 							unhighlight(nodeRad, xPrevNode, yPrevNode);
 							lastHighlightedNodeIndex = nearestNodeIndex;
 						}
-						else if (!highlighted)
-						{
+						else if (!highlighted) {
+
 							//If no node is highlighted, highlight the current node we clicked inside.
 							highlight(nodeRad, xCurNode, yCurNode);
 							lastHighlightedNodeIndex = nearestNodeIndex; //Save index of the last highlighted node.
@@ -423,7 +411,7 @@ void Window::pollEvents()
 					beta = optParams.at(6);
 					pheromoneUpdateRate = optParams.at(7);
 				
-				if (plot && nodePos.size() > 2) //The program collapses if no nodes are placed
+				if (plot && nodePos.size() > 2) //The program collapses if no nodes are placed 
 				{
 					//Generates the inital pheromone matrix
 					vector<vector<double>> pheromones = genInitMat(nodePos.size(), 
@@ -435,8 +423,8 @@ void Window::pollEvents()
 					vector<int> curAntPath, prevAntPath, bestAntPath;
 					//Runs function with the generated initial pheromone matrix
 					//and node positions
-					for (int i = 0; i < nrIterations; i++)
-					{
+					for (int i = 0; i < nrIterations; i++) {
+
 						//The function used return the updated pheromone matrix, minimum distance and best iteration path
 						auto result = antOptOneIteration(nrAnts,
 														 evaporationRate,
@@ -449,8 +437,9 @@ void Window::pollEvents()
 						curAntPath = get<1>(result);	  //The best ant path (for the current iteration)
 						pheromones = get<2>(result);	  //Update pheromone matrix for next iteration
 						distances.push_back(curDistance); //Save the minimum distance for each iteration
-						if (curDistance < minDistance)
-						{
+						
+						if (curDistance < minDistance) {
+
 							//If smallest path length so far has been found
 							//save it to display and draw that path at the end
 							minDistance = curDistance;
@@ -459,8 +448,8 @@ void Window::pollEvents()
 						//Redraw map and plot with nodes without previous connections
 						eraseMap();
 						redrawNodes(nodePos, nodeRad);
-						if (i > 0)
-						{
+						if (i > 0) {
+
 							//Redraw the previous connection, but as a less visible color
 							connectAllNodes(nodePos, prevAntPath, nodeRad, "Previous");
 						}
