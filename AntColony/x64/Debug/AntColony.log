@@ -8,24 +8,26 @@ C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(56,60): warning C4
 C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(57,83): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
 C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(57,69): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
 C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(77,20): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(88,10): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(87,10): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(86,10): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(85,10): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(87,10): warning C4244: 'argument': conversion from 'double' to 'int32_t', possible loss of data
+C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(86,10): warning C4244: 'argument': conversion from 'double' to 'int32_t', possible loss of data
+C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(99,10): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(98,10): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(97,10): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(96,10): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(292,10): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
 C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(293,10): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
 C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(294,10): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
 C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(295,10): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(296,10): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
-C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(375,28): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(417,27): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
+C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(374,28): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(418,27): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
           with
           [
               _Ty=double
           ]
-C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(419,33): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
+C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(420,33): warning C4244: '=': conversion from '_Ty' to 'int', possible loss of data
           with
           [
               _Ty=double
           ]
-C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(429,65): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Alexa\source\repos\AntColony\AntColony\antWindow.cpp(430,65): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
   AntColony.vcxproj -> C:\Users\Alexa\source\repos\AntColony\x64\Debug\AntColony.exe

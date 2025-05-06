@@ -64,7 +64,7 @@ vector<int> Window::DrawEmptyPlot() {
 
 //Plots on the window (line-plot), intended to plot the current vector
 //of the minimum distance per iteration 
-void Window::drawPlot(vector<double> dist) {
+void Window::drawPlot(vector<double> dist, vector<int> minDistIdx) {
 
 	int xRect, yRect, wRect, hRect, plotwidth;
 	double scale;
@@ -78,6 +78,17 @@ void Window::drawPlot(vector<double> dist) {
 	scale = hRect / maxDistance(dist);		//Scales the height of the plot
 	//Plots all values within the designated plot space
 	SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
+
+	for (int j = 0; j < minDistIdx.size(); j++) {
+
+		 DrawCircle(
+			renderer,
+			xRect + round(j * plotwidth),
+			yRect + round(scale * minDistIdx.at(j)),
+			5);
+
+	}
+
 	for (int i = 0; i < dist.size() - 1; i++) {
 
 		SDL_RenderDrawLine(
@@ -391,6 +402,7 @@ void Window::pollEvents() {
 				else { cout << "Out of bounds! \n"; }
 				break;
 			case SDL_BUTTON_RIGHT:
+
 				//Displays the parameters and lets you chose to change the current parameter
 				//to fine tune the algorithm
 				cout << endl;
@@ -399,6 +411,7 @@ void Window::pollEvents() {
 
 				break;
 			case SDL_BUTTON_MIDDLE:
+
 					//Activates parameters before running algorithm
 					optParams = loadParams();
 					paramsLoaded = true;
@@ -411,13 +424,14 @@ void Window::pollEvents() {
 					beta = optParams.at(6);
 					pheromoneUpdateRate = optParams.at(7);
 				
-				if (plot && nodePos.size() > 2) //The program collapses if no nodes are placed 
-				{
+				if (plot && nodePos.size() > 2) { //The program collapses if no nodes are placed 
+			
 					//Generates the inital pheromone matrix
 					vector<vector<double>> pheromones = genInitMat(nodePos.size(), 
 																   initUpperPheromone, 
 																   initLowerPheromone);
 					vector<double> distances;
+					vector<int> minDistancesIndex;
 					double minDistance = pow(10, 6); //Sets the minimum distance to a very large baseline
 					double curDistance;				 //The current minimum path length of the iteration is stored here
 					vector<int> curAntPath, prevAntPath, bestAntPath;
@@ -444,6 +458,7 @@ void Window::pollEvents() {
 							//save it to display and draw that path at the end
 							minDistance = curDistance;
 							bestAntPath = curAntPath;
+							minDistancesIndex.push_back(i);
 						}
 						//Redraw map and plot with nodes without previous connections
 						eraseMap();
@@ -456,7 +471,7 @@ void Window::pollEvents() {
 						//Draw the current connection for the best path of the iteration
 						connectAllNodes(nodePos, curAntPath, nodeRad, "Current");
 						//Redraw plot of all minimum distances
-						drawPlot(distances);
+						drawPlot(distances, minDistancesIndex);
 						prevAntPath = curAntPath;
 					}
 					//Erases map again and fraws the best saved path

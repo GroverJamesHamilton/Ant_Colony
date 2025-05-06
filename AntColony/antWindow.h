@@ -29,7 +29,7 @@ public:
 	void redrawNodes(vector<vector<int>> nodePos, int radius);//Redraws nodes
 	void dispParams();										//Display all ant parameters
 	void changeParam();										//Change the desired parameter
-	void drawPlot(vector<double> plotDistances);			//Plots the progression of the minimum distance for each iteration
+	void drawPlot(vector<double> plotDistances, vector<int> minDistancesIndex);			//Plots the progression of the minimum distance for each iteration
 
 private:
 	bool init(); //Initialize window surface, font etc
