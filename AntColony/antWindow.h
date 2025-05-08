@@ -17,7 +17,7 @@ public:
 	Window(const string& title, int width, int height);		//Window constructor
 	~Window();												//Window destructor
 	void pollEvents();										//Handling what to do when using the mouse clicker
-	inline bool isClosed() { return closed; };				//Is used to terminate the program in main if the window is closed								
+	inline bool isClosed() { return closed; };				//Is used to terminate the program in main if the window is closed
 	void DrawNode(int nodeNum, int radius, int x, int y);	//Draws a node that every ant should visit
 	void highlight(int radius, int x, int y);				//Highlighting a node, a remnant from my previous program
 	void unhighlight(int radius, int x, int y);				//Same as above
@@ -29,6 +29,7 @@ public:
 	void redrawNodes(vector<vector<int>> nodePos, int radius);//Redraws nodes
 	void dispParams();										//Display all ant parameters
 	void changeParam();										//Change the desired parameter
+	void Window::saveNodes(vector<vector<int>> nodePos, string fileName); //Saves nodes in a file
 	void drawPlot(vector<double> plotDistances, vector<int> minDistancesIndex);			//Plots the progression of the minimum distance for each iteration
 
 private:

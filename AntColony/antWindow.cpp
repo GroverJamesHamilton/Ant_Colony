@@ -40,7 +40,7 @@ vector<int> Window::DrawEmptyPlot() {
 	rect.y = plotY;
 	rect.w = width;
 	rect.h = plotHeight;
-	//dr is used to put some distance between the plot axes and the window edges 
+	//dr is used to put some distance between the plot axes and the window edges
 	int origox = dr * width;
 	int origoy = (1 - dr * plotRatio) * height;
 	int plotw = width - 2 * origox;
@@ -63,7 +63,7 @@ vector<int> Window::DrawEmptyPlot() {
 }
 
 //Plots on the window (line-plot), intended to plot the current vector
-//of the minimum distance per iteration 
+//of the minimum distance per iteration
 void Window::drawPlot(vector<double> dist, vector<int> minDistIdx) {
 
 	int xRect, yRect, wRect, hRect, plotwidth;
@@ -92,10 +92,10 @@ void Window::drawPlot(vector<double> dist, vector<int> minDistIdx) {
 	for (int i = 0; i < dist.size() - 1; i++) {
 
 		SDL_RenderDrawLine(
-			renderer, 
+			renderer,
 			xRect + round(i * plotwidth),
-			yRect - round(scale * dist.at(i)), 
-			xRect + round((i + 1) * plotwidth), 
+			yRect - round(scale * dist.at(i)),
+			xRect + round((i + 1) * plotwidth),
 			yRect - round(scale * dist.at(i + 1)));
 	}
 	SDL_RenderPresent(renderer);
@@ -144,7 +144,7 @@ void Window::dispParams() {
 	}
 }
 
-//Change parameter by choice in the text file, 
+//Change parameter by choice in the text file,
 //this makes the same nodemap can be tested with different parameter values
 void Window::changeParam() {
 
@@ -157,7 +157,7 @@ void Window::changeParam() {
 		parameters.push_back(param);
 	}
 	while (1) {
-		//Instruct the user what to type in 
+		//Instruct the user what to type in
 		string paramNumber, newValue;
 		cout << "What parameter (1-8) do you want to change? (Check names above)" << endl;
 		cout << "Type in anything else to not change anything." << endl;
@@ -286,7 +286,7 @@ void Window::connect2Nodes(vector<int> node1, vector<int> node2, int radius) {
 	y2 = node2.at(1);
 	double angle12 = getAngle(x1, y1, x2, y2); //Angle between point 1 and 2
 	double angle21 = angle12 + M_PI;
-	//Update new coordinates to draw from, 
+	//Update new coordinates to draw from,
 	//this makes the line go from the nodes circular surface rather than its center
 	//makes the node number readable
 	X1 = x1 + radius * cos(angle12);
@@ -297,7 +297,7 @@ void Window::connect2Nodes(vector<int> node1, vector<int> node2, int radius) {
 	SDL_RenderDrawLine(renderer, X1, Y1, X2, Y2);
 }
 
-//Connects all nodes based on either the final shortest path 
+//Connects all nodes based on either the final shortest path
 //or the shortest path from the current iteration
 void Window::connectAllNodes(vector<vector<int>> nodePos, vector<int> path, int radius, string drawMode) {
 
@@ -310,7 +310,7 @@ void Window::connectAllNodes(vector<vector<int>> nodePos, vector<int> path, int 
 	for (int i = 0; i < nodePos.size() - 1; i++) {
 
 		//Nodes are connected to the their neighbors in the inout vector
-		//For example is the path to display is {0 3 5 2 1 4}, 
+		//For example is the path to display is {0 3 5 2 1 4},
 		//first a line is drawn between node 0 and 3, then 3 and 5 etc
 		node1 = nodePos.at(path.at(i));
 		node2 = nodePos.at(path.at(i + 1));
@@ -335,6 +335,20 @@ void Window::redrawNodes(vector<vector<int>> nodePos, int radius) {
 	}
 }
 
+void Window::saveNodes(vector<vector<int>> nodePos, string fileName)
+{
+	ifstream ifile(fileName);
+	return ifile;
+
+	if(ifile)
+	{
+		cout << "File exists" << endl;
+	}
+
+	for (size_t i = 0; i < nodePos.size(); i++) {
+	}
+}
+
 //Handles the mouse click events
 void Window::pollEvents() {
 
@@ -350,6 +364,7 @@ void Window::pollEvents() {
 			closed = true;
 			break;
 		case SDL_MOUSEBUTTONDOWN:
+
 			switch (event.button.button) {
 
 			case SDL_BUTTON_LEFT:
@@ -359,12 +374,12 @@ void Window::pollEvents() {
 				if (inBounds(x, y, nodeRad, width, static_cast<int>((1 - plotRatio) * height))) {
 
 					//In order to create or manipulate nodes,
-					//the click has to in bounds of the surface, 
+					//the click has to in bounds of the surface,
 					//and the drawn node's rim should not intersect with the edges
 					//(Design choice, look's better this way).
- 
+
 					//Store positions.
-					tempPos.at(0) = x; 
+					tempPos.at(0) = x;
 					tempPos.at(1) = y;
 					tempPos.at(2) = nodeRad;
 
@@ -423,12 +438,12 @@ void Window::pollEvents() {
 					alpha = optParams.at(5);
 					beta = optParams.at(6);
 					pheromoneUpdateRate = optParams.at(7);
-				
-				if (plot && nodePos.size() > 2) { //The program collapses if no nodes are placed 
-			
+
+				if (plot && nodePos.size() > 2) { //The program collapses if no nodes are placed
+
 					//Generates the inital pheromone matrix
-					vector<vector<double>> pheromones = genInitMat(nodePos.size(), 
-																   initUpperPheromone, 
+					vector<vector<double>> pheromones = genInitMat(nodePos.size(),
+																   initUpperPheromone,
 																   initLowerPheromone);
 					vector<double> distances;
 					vector<int> minDistancesIndex;
@@ -451,7 +466,7 @@ void Window::pollEvents() {
 						curAntPath = get<1>(result);	  //The best ant path (for the current iteration)
 						pheromones = get<2>(result);	  //Update pheromone matrix for next iteration
 						distances.push_back(curDistance); //Save the minimum distance for each iteration
-						
+
 						if (curDistance < minDistance) {
 
 							//If smallest path length so far has been found
@@ -487,6 +502,19 @@ void Window::pollEvents() {
 			}
 			break;
 		case SDL_KEYDOWN:
+
+		switch (event.key.keysym.sym) {
+
+		case SDLK_BACKSPACE:
+
+		cout << "You pressed space" << endl;
+
+		break;
+
+		default:
+		break;
+	  }
+
 			break;
 
 		default:

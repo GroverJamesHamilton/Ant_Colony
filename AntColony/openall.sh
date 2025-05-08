@@ -1,11 +1,11 @@
 
-atom Algorithm.cpp
-atom Algorithm.h
+atom Algorithm.cpp &
+atom Algorithm.h &
 
-atom antwindow.cpp
-atom antwindow.h
+atom antwindow.cpp &
+atom antwindow.h &
 
-atom restFunctions.cpp
-atom restFunctions.h
+atom restFunctions.cpp &
+atom restFunctions.h &
 
 atom main.cpp
